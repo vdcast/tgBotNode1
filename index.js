@@ -51,8 +51,8 @@ const startInfo = async (chatId, msg) => {
 }
 
 const startSupport = async (chatId, text) => {
-    await bot.sendMessage(sendId, 'ChatID: ' + chatId + '. Text of message: ' + text)
-    await bot.sendMessage(chatId, 'Send your message here and I`ll answer you ASAP ;)', supportOptions)
+//    await bot.sendMessage(sendId, 'ChatID: ' + chatId + '. Text of message: ' + text)
+    return bot.sendMessage(chatId, 'Send your message here and I`ll answer you ASAP ;)', supportOptions)
 }
 
 const start = async () => {
@@ -91,9 +91,28 @@ const start = async () => {
                 return startGame(chatId);
             }
 
+
+
+            if (chatId == sendId){
+                if (text === "msgChooseChat"){
+                    await bot.sendMessage(chatId, "Send me chatid where to send your message");
+                    bot.on('message', async msgChooseChat => {
+                        const textChooseChat = msgChooseChat.text;
+                        try {
+                            await bot.sendMessage(textChooseChat, "kek")
+                        } catch (e) {
+                            await bot.sendMessage(sendId, 'ChatID: ' + chatId + '. Text of message: ' + text)
+                            return bot.sendMessage(chatId, 'Some error, checkit!) ' + e);
+                        }
+                    })
+                }
+            }
+
+
+
             console.log(msg)
 			await bot.sendMessage(sendId, 'ChatID: ' + chatId + '. Text of message: ' + text)
-            return bot.sendMessage(chatId, 'I don`t understand you, try again!)', homeOptions);
+            return bot.sendMessage(chatId, 'Got it! Let me answer you in a while...', supportOptions);
         } catch (e) {
             await bot.sendMessage(sendId, 'ChatID: ' + chatId + '. Text of message: ' + text)
             return bot.sendMessage(chatId, 'Some error, checkit!) ' + e);
@@ -116,7 +135,11 @@ const start = async () => {
             return startHomeBack(chatId, data);
         }
         if (data === '/support') {
-            
+//            bot.on('message', async msgSupport => {
+//                const chatIdSupport = msgSupport.message.chat.id;
+//                const textSupport = msgSupport.text;
+//                await bot.sendMessage(sendId, chatIdSupport + ' | Support message: ' + textSupport);
+//            })
             return startSupport(chatId, data);
         }
         const user = await UserModel.findOne({ where: { chatId: chatId.toString() } })

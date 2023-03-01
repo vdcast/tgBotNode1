@@ -36,7 +36,6 @@ module.exports = {
 		reply_markup: JSON.stringify({
 			inline_keyboard: [
 				[{text: 'Play game', callback_data: '/again'}],
-				[{text: 'Support', callback_data: '/support'}],
 				[{text: 'Home', callback_data: '/home'}],
 
 			]
@@ -46,8 +45,6 @@ module.exports = {
 	supportOptions: {
 		reply_markup: JSON.stringify({
 			inline_keyboard: [
-				[{text: 'Play game', callback_data: '/again'}],
-				[{text: 'Information', callback_data: '/info'}],
 				[{text: 'Home', callback_data: '/home'}],
 
 			]
